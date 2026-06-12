@@ -1931,6 +1931,57 @@ input[type="range"] {
   font-size: 10px;
 }
 
+.protein-basis {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 14px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--forest-2);
+  border-radius: var(--radius-card);
+}
+
+.protein-basis-head {
+  display: grid;
+  gap: 4px;
+}
+
+.protein-basis-head p {
+  color: var(--ink-soft);
+  font-size: 11px;
+}
+
+.protein-suggestion {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.protein-suggestion span {
+  color: var(--ink-soft);
+  font-size: 12px;
+}
+
+.protein-suggestion strong {
+  color: var(--accent-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.protein-suggestion-empty {
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+.per-meal-hint {
+  margin-top: 12px;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
 .cloud-panel {
   display: grid;
   gap: 12px;

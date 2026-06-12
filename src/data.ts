@@ -84,8 +84,16 @@ export const researchItems = [
     name: 'Protein + body recomposition',
     goals: ['nutrition', 'training'],
     evidence: 'Core nutrition principle',
-    overview: 'Protein helps protect lean mass while training and dieting. The app keeps protein visible because missed intake is one of the easiest ways a cut starts feeling worse than it needs to.',
+    overview: 'Protein is mainly a muscle-building lever: it helps you keep or add lean mass while training. Fat loss comes from the overall deficit plus strength training, not from protein alone. Targets work best anchored to bodyweight (~1.2 g/kg to maintain, up to ~2.0 for hard training) and spread across meals (~25-37g each) rather than one large serving.',
     watch: 'Kidney disease, eating-disorder history, pregnancy, or complex medical conditions should change targets with professional guidance.',
+  },
+  {
+    id: 'cycle-syncing-honesty',
+    name: 'Cycle "syncing" — what the evidence shows',
+    goals: ['cycle', 'training'],
+    evidence: 'High-quality reviews (umbrella + 2025 consensus)',
+    overview: 'Training your strength program to specific cycle phases is not well supported: most quality studies find no meaningful strength difference between phases, and phase-based periodization gives no edge over consistent programming. That is why this app logs your cycle as personal context to notice your own patterns — never as a prescription telling you to lift heavier or lighter on certain days.',
+    watch: 'Your individual response still matters. Track how you actually feel and perform, and bring real patterns (not a generic calendar) to your coach or clinician.',
   },
   {
     id: 'appetite-support',
@@ -114,10 +122,11 @@ export const researchItems = [
 ]
 
 export const labReferences = [
+  ['Ferritin (iron stores)', 'For women, the printed lab floor (often ~10-15 ng/mL) misses a lot of iron deficiency. Many clinicians treat under ~30 ng/mL as low and aim for ~50+ ng/mL for full repletion, especially with heavy periods, fatigue, hair shedding, or hard training. If yours is under ~30, it is worth discussing with your clinician.'],
   ['Blood pressure', 'Use home trends, not one reading. Under 120/80 mm Hg is considered normal by the AHA.'],
   ['HbA1c', 'Below 5.7% is generally normal; 5.7-6.4% is prediabetes; 6.5%+ may indicate diabetes and needs confirmation.'],
   ['Lipids', 'Review LDL, HDL, triglycerides, and non-HDL together. General non-HDL goal is below 130 mg/dL.'],
-  ['CBC + ferritin', 'Menstruation can raise iron-loss risk. Review fatigue, hemoglobin, ferritin, and hematocrit together.'],
+  ['CBC + hemoglobin', 'Menstruation raises iron-loss risk. Review fatigue, hemoglobin, ferritin, and hematocrit together rather than one value alone.'],
   ['Liver + kidney', 'ALT/AST and creatinine/eGFR should be interpreted against your history, medications, hydration, and muscle mass.'],
   ['Hormones', 'Estradiol and other hormone values shift by life stage, cycle timing, symptoms, and prescribed therapy. Trend with your clinician.'],
 ]

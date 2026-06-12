@@ -6,6 +6,20 @@ You are continuing a prototype called **Forged-Form** and elevating it to a prem
 
 Forged-Form is a mobile-first women's health and body recomposition app that helps users track protein, training, habits, symptoms, cycle/perimenopause context, vitals, labs, and coach-ready progress summaries — with the polish and calm of a flagship health product.
 
+## Evidence-Locked Decisions (deep-research pass, 2026-06-12)
+
+These are backed by verified evidence (umbrella reviews, meta-analyses, 2023–2025 primary sources). Do not undo them or build the debunked features.
+
+- **Protein is bodyweight-anchored, not a flat number.** Targets: ~1.2 g/kg maintain, ~1.6 recomp, ~2.0 hard-training; per-meal floor ~25–37g. Logic in `src/utils/protein.ts`. Peri/postmenopausal users get a +0.2 g/kg nudge (anabolic resistance).
+- **Protein is a muscle-building lever, not a fat-loss lever.** Copy must not imply more protein = more fat loss; fat loss comes from the deficit + resistance training.
+- **Resistance training is the spine** — the only weight-loss modality that preserves/builds lean mass in a deficit for women. Cardio is adjunct.
+- **Progress is framed against the user's own baseline**, never male-normed strength standards.
+- **DO NOT build cycle-phase training periodization.** High-quality evidence shows no benefit. Cycle/symptom data stays *descriptive* personal context, never a training prescription. The Learn tab states this honestly (a trust differentiator).
+- **DO NOT predict ovulation/fertile windows from dates.** Date-based predictions are inaccurate. Keep cycle context as manual self-report; if a phase is ever shown, label it "estimated."
+- **Ferritin uses physiologic thresholds** (~30 ng/mL concern, ~50 repletion), not the lab's printed floor — standard ranges underdiagnose iron deficiency in women. Framed "discuss with clinician."
+- **Local-first/no-upload is a real differentiator** (female-health apps are known to mishandle sensitive data) — keep privacy obvious.
+- **No verified evidence** was found for bone-density / thyroid / women's-BP-norm / GLP-1-women-specific / contraception features — do not invent them without research.
+
 ## North Star
 
 Forged-Form should feel like the app a thoughtful friend who happens to be a great strength coach and a women's health nurse would build: private, fast, beautiful, and quietly smart. Every screen earns its place. Every tap is one-thumb-reachable. Nothing nags, sells, or diagnoses.

@@ -4,6 +4,7 @@ import type { User } from '@supabase/supabase-js'
 import { db } from '../db'
 import { getSupabase, isSupabaseConfigured } from '../lib/supabase'
 import { syncLocalToSupabase } from '../lib/cloudSync'
+import { perMealFloor, proteinGoals, proteinGramsFromWeight, suggestedPerKg, type ProteinGoal } from '../utils/protein'
 import type { Settings, ThemePreference } from '../types'
 
 export function SettingsPanel({ settings, onClose }: { settings: Settings; onClose: () => void }) {
@@ -78,6 +79,7 @@ export function SettingsPanel({ settings, onClose }: { settings: Settings; onClo
           <div><span className="eyebrow">Personal targets</span><h2 id="settings-title">Plan settings</h2></div>
           <button type="button" className="icon-button" onClick={onClose} title="Close settings" aria-label="Close settings"><X size={20} /></button>
         </header>
+        <ProteinBasis draft={draft} setDraft={setDraft} />
         <div className="metric-grid">
           <SettingNumber label="Protein" suffix="g" value={draft.proteinTarget} onChange={(proteinTarget) => setDraft({ ...draft, proteinTarget })} />
           <SettingNumber label="Calories" suffix="kcal" value={draft.calorieTarget} onChange={(calorieTarget) => setDraft({ ...draft, calorieTarget })} />
@@ -132,6 +134,70 @@ export function SettingsPanel({ settings, onClose }: { settings: Settings; onClo
         <footer><button type="button" className="secondary-button" onClick={onClose}>Cancel</button><button type="button" className="primary-button" onClick={() => void save()}>Save settings</button></footer>
       </section>
     </div>
+  )
+}
+
+function ProteinBasis({ draft, setDraft }: { draft: Settings; setDraft: (s: Settings) => void }) {
+  const goal: ProteinGoal = (proteinGoals.find((g) => g.perKg === draft.proteinPerKg)?.id) ?? 'recomp'
+  const weight = draft.bodyWeightLb
+  const perKg = weight ? suggestedPerKg(goal, draft.lifeStage) : null
+  const suggested = weight && perKg ? proteinGramsFromWeight(weight, perKg) : null
+  const olderBump = (draft.lifeStage === 'perimenopause' || draft.lifeStage === 'postmenopause') && perKg
+    ? ' (nudged up for life stage)'
+    : ''
+
+  return (
+    <section className="protein-basis">
+      <div className="protein-basis-head">
+        <span className="eyebrow">Protein basis</span>
+        <p>Anchor protein to bodyweight, not a flat number. Distribution matters too — aim for the per-meal floor across the day.</p>
+      </div>
+      <div className="metric-grid">
+        <label className="field">
+          <span>Bodyweight</span>
+          <div className="input-suffix">
+            <input
+              type="number"
+              inputMode="decimal"
+              min="1"
+              placeholder="optional"
+              value={weight ?? ''}
+              onChange={(event) => setDraft({ ...draft, bodyWeightLb: event.target.value ? Number(event.target.value) : undefined })}
+            />
+            <small>lb</small>
+          </div>
+        </label>
+        <label className="field">
+          <span>Goal</span>
+          <select
+            value={goal}
+            onChange={(event) => {
+              const next = proteinGoals.find((g) => g.id === event.target.value)
+              setDraft({ ...draft, proteinPerKg: next?.perKg })
+            }}
+          >
+            {proteinGoals.map((g) => <option key={g.id} value={g.id}>{g.label} · {g.detail.split(' — ')[0]}</option>)}
+          </select>
+        </label>
+      </div>
+      {suggested && weight ? (
+        <div className="protein-suggestion">
+          <span>
+            Suggested: <strong>{suggested}g/day</strong> · ~{perMealFloor(weight)}g per meal{olderBump}
+          </span>
+          <button
+            type="button"
+            className="secondary-button"
+            disabled={draft.proteinTarget === suggested}
+            onClick={() => setDraft({ ...draft, proteinTarget: suggested })}
+          >
+            {draft.proteinTarget === suggested ? 'Applied' : 'Use this'}
+          </button>
+        </div>
+      ) : (
+        <p className="protein-suggestion-empty">Add bodyweight to get a g/kg-based target and per-meal floor.</p>
+      )}
+    </section>
   )
 }
 

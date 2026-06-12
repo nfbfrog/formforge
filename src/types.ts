@@ -50,6 +50,8 @@ export type Settings = {
   hormoneSupport: boolean
   theme?: ThemePreference
   onboardingComplete?: boolean
+  bodyWeightLb?: number
+  proteinPerKg?: number
 }
 
 export type ScreenId = 'today' | 'week' | 'plan' | 'training' | 'health' | 'learn'

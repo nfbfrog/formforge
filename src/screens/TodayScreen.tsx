@@ -27,6 +27,7 @@ import { SessionLogger } from '../components/SessionLogger'
 import { createDailyLog, habitKeys, type DailyLog, type HabitKey } from '../types'
 import { friendlyDate, localDateKey, startOfWeek } from '../utils/date'
 import { haptics } from '../utils/haptics'
+import { perMealFloor } from '../utils/protein'
 
 type CycleContext = DailyLog['cycleContext']
 
@@ -201,6 +202,11 @@ export function TodayScreen() {
             Custom
           </button>
         </div>
+        {settings?.bodyWeightLb ? (
+          <p className="per-meal-hint">
+            Aim for ~{perMealFloor(settings.bodyWeightLb)}g per meal — spreading protein across the day builds more muscle than one big hit.
+          </p>
+        ) : null}
       </section>
 
       <section className="fold-card">

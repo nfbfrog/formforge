@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { ArrowLeft, ArrowRight, Check, Lock, Moon, MonitorSmartphone, Sun } from 'lucide-react'
 import { db } from '../db'
+import { perMealFloor, proteinGramsFromWeight, suggestedPerKg } from '../utils/protein'
 import type { Settings, ThemePreference } from '../types'
 
 const lifeStageOptions: Array<{ id: Settings['lifeStage']; label: string; detail: string }> = [
@@ -75,13 +76,36 @@ export function Onboarding({ settings }: { settings: Settings }) {
             <span className="eyebrow">Step 2 of 4</span>
             <h2>Set your protein floor</h2>
             <p>
-              A common starting point is 0.7–1g per pound of goal body weight.
-              Adjust it with a coach or dietitian as you go.
+              Protein works best anchored to bodyweight. Add yours and we'll suggest a
+              target; you can fine-tune it any time.
             </p>
+            <label className="field">
+              <span>Bodyweight (optional)</span>
+              <div className="input-suffix">
+                <input
+                  type="number"
+                  inputMode="decimal"
+                  min="1"
+                  placeholder="e.g. 150"
+                  value={draft.bodyWeightLb ?? ''}
+                  onChange={(event) => {
+                    const lb = event.target.value ? Number(event.target.value) : undefined
+                    const perKg = lb ? suggestedPerKg('recomp', draft.lifeStage) : draft.proteinPerKg
+                    setDraft({
+                      ...draft,
+                      bodyWeightLb: lb,
+                      proteinPerKg: lb ? perKg : draft.proteinPerKg,
+                      proteinTarget: lb && perKg ? proteinGramsFromWeight(lb, perKg) : draft.proteinTarget,
+                    })
+                  }}
+                />
+                <small>lb</small>
+              </div>
+            </label>
             <div className="onboarding-slider">
               <div className="slider-readout">
                 <strong>{draft.proteinTarget}</strong>
-                <span>g / day</span>
+                <span>g / day{draft.bodyWeightLb ? ` · ~${perMealFloor(draft.bodyWeightLb)}g per meal` : ''}</span>
               </div>
               <input
                 type="range"
