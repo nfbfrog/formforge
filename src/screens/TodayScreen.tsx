@@ -3,8 +3,9 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import {
   AlertTriangle,
   BedDouble,
-  Check,
+  ChevronRight,
   Droplets,
+  Dumbbell,
   Footprints,
   HeartPulse,
   Moon,
@@ -13,19 +14,18 @@ import {
   Salad,
   Sparkles,
   SunMedium,
-  Target,
   ThermometerSun,
   TimerReset,
   Waves,
-  Zap,
 } from 'lucide-react'
 import { db, getOrCreateDailyLog } from '../db'
-import { menus } from '../data'
+import { menus, sessions } from '../data'
 import { SectionHeading } from '../App'
 import { AnchorRings, type AnchorRingItem } from '../components/AnchorRings'
 import { BottomSheet } from '../components/BottomSheet'
+import { SessionLogger } from '../components/SessionLogger'
 import { createDailyLog, habitKeys, type DailyLog, type HabitKey } from '../types'
-import { friendlyDate, localDateKey } from '../utils/date'
+import { friendlyDate, localDateKey, startOfWeek } from '../utils/date'
 import { haptics } from '../utils/haptics'
 
 type CycleContext = DailyLog['cycleContext']
@@ -49,42 +49,32 @@ const contextOptions: Array<{ id: CycleContext; label: string; icon: typeof Wave
 
 const symptomOptions = ['Cramps', 'Bloat', 'Cravings', 'Headache', 'Hot flashes', 'Low mood']
 
-const contextGuidance: Record<CycleContext, string> = {
-  period: 'Recovery bias: keep protein steady, train lighter if cramps or fatigue are up.',
-  follicular: 'Good window to build momentum if sleep and joints feel solid.',
-  ovulation: 'Use good warmups and clean reps; some women feel powerful, some feel looser.',
-  luteal: 'Protect consistency. Hunger, scale noise, and temperature shifts can be louder here.',
-  'peri-meno': 'Watch heat, sleep, mood, and recovery. Trends matter more than one rough day.',
-  none: 'Use energy, appetite, sleep, and symptoms as the daily read.',
-}
+const appetiteWords = ['Gone', 'Low', 'Steady', 'Hungry', 'Ravenous']
+const energyWords = ['Flat', 'Low', 'Steady', 'Good', 'Strong']
+const nauseaWords = ['None', 'Mild', 'Moderate', 'Strong']
 
 export function TodayScreen() {
   const date = localDateKey()
+  const weekStart = localDateKey(startOfWeek())
   const [proteinSheetOpen, setProteinSheetOpen] = useState(false)
   const [customAmount, setCustomAmount] = useState('')
   const [resetArmed, setResetArmed] = useState(false)
+  const [liftOpen, setLiftOpen] = useState(false)
+  const [signalsOpen, setSignalsOpen] = useState(false)
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(null)
   const storedLog = useLiveQuery(() => db.dailyLogs.get(date), [date])
   const settings = useLiveQuery(() => db.settings.get('primary'), [])
+  const metric = useLiveQuery(() => db.weeklyMetrics.get(weekStart), [weekStart])
+  const setsToday = useLiveQuery(() => db.exerciseEntries.where('date').equals(date).toArray(), [date]) ?? []
+
   const log = normalizeDailyLog(storedLog ?? createDailyLog(date), settings?.lifeStage)
   const target = settings?.proteinTarget ?? 140
   const percent = Math.min(100, Math.round((log.protein / target) * 100))
   const completeCount = habitKeys.filter((key) => log.habits[key]).length
-  const remainingProtein = Math.max(0, target - log.protein)
-  const allMeals = menus.flatMap((menu) => menu.meals)
-  const nextMeal = allMeals.find((meal) => meal.protein >= Math.min(remainingProtein, 30)) ?? allMeals[0]
-  const nextHabit = habitKeys.find((key) => !log.habits[key])
-  const nextAction = buildNextAction({
-    completeCount,
-    remainingProtein,
-    nextHabit: nextHabit ? habitMeta[nextHabit].label.toLowerCase() : '',
-    nextMeal: nextMeal.name,
-    metabolicSupport: settings?.metabolicSupport ?? false,
-    appetite: log.appetite,
-    energy: log.energy,
-    nausea: log.nausea,
-    cycleContext: log.cycleContext,
-    symptoms: log.symptoms,
-  })
+
+  const suggestedSession = sessions.find((session) => !metric?.sessions?.[session.id])
+  const activeSession = sessions.find((session) => session.id === selectedSessionId) ?? suggestedSession ?? sessions[0]
+  const sessionsDone = sessions.filter((session) => metric?.sessions?.[session.id]).length
 
   async function save(update: (current: DailyLog) => DailyLog) {
     const current = normalizeDailyLog(await getOrCreateDailyLog(date), settings?.lifeStage)
@@ -142,69 +132,27 @@ export function TodayScreen() {
     })),
   ]
 
-  async function toggleSymptom(symptom: string) {
-    await save((current) => ({
-      ...current,
-      symptoms: current.symptoms.includes(symptom)
-        ? current.symptoms.filter((item) => item !== symptom)
-        : [...current.symptoms, symptom],
-    }))
-  }
+  // Logging stays fast; the only prose on this screen is a safety line when logged signals warrant one.
+  const safetyNote = settings?.metabolicSupport && (log.nausea >= 2 || log.appetite <= 2)
+    ? 'Protect intake today: protein and fluids first. Persistent vomiting, dehydration, or inability to eat belongs with the prescribing clinician.'
+    : log.energy <= 2 && log.symptoms.length >= 2
+      ? 'Rough day is fine — hit protein, hydrate, walk. Severe pain, heavy bleeding, fainting, or chest symptoms need medical help, not willpower.'
+      : ''
 
   return (
     <div className="content-stack today-stack">
-      <section className={`today-read ${nextAction.tone}`}>
-        <div className="read-copy">
-          <span className="eyebrow">FormForge daily</span>
-          <h2>{nextAction.title}</h2>
-          <p>{nextAction.detail}</p>
-        </div>
-        <div className="read-summary" aria-label="Today summary">
-          <SummaryTile icon={Target} label="Protein left" value={`${remainingProtein}g`} tone={remainingProtein === 0 ? 'good' : 'base'} />
-          <SummaryTile icon={Check} label="Anchors" value={`${completeCount}/5`} tone={completeCount >= 4 ? 'good' : 'base'} />
-          <SummaryTile icon={Zap} label="Energy" value={`${log.energy}/5`} tone={log.energy <= 2 ? 'watch' : 'base'} />
-        </div>
-        <div className="context-strip" aria-label="Cycle and body context">
-          {contextOptions.map((option) => {
-            const Icon = option.icon
-            const active = log.cycleContext === option.id
-            return (
-              <button
-                key={option.id}
-                type="button"
-                className={active ? 'active' : ''}
-                onClick={() => void save((current) => ({ ...current, cycleContext: option.id }))}
-                aria-pressed={active}
-              >
-                <Icon size={15} />
-                {option.label}
-              </button>
-            )
-          })}
-        </div>
-      </section>
-
-      {nextAction.tone === 'watch' ? (
-        <section className="alert-strip">
-          <AlertTriangle size={19} />
-          <p>{nextAction.warning}</p>
-        </section>
-      ) : null}
-
       <section>
         <SectionHeading
           title="Daily anchors"
-          detail={completeCount === 5
-            ? 'All five closed. Today is handled.'
-            : 'Five basics that protect the cut without turning the day into homework.'}
+          detail={completeCount === 5 ? 'All five closed. Today is handled.' : friendlyDate(date)}
         />
         <AnchorRings items={ringItems} celebrate={completeCount === 5} />
       </section>
 
-      <section className="focus-panel protein-panel compact-action-panel">
+      <section className="focus-panel protein-panel">
         <SectionHeading
           title="Protein floor"
-          detail={friendlyDate(date)}
+          detail={`${Math.max(0, target - log.protein)}g to go`}
           action={
             <button
               type="button"
@@ -255,60 +203,133 @@ export function TodayScreen() {
         </div>
       </section>
 
-      <section>
-        <SectionHeading title="Body signals" detail={contextGuidance[log.cycleContext]} />
-        <div className="checkin-grid">
-          <SignalScale
-            label="Appetite"
-            value={log.appetite}
-            words={['Gone', 'Low', 'Steady', 'Hungry', 'Ravenous']}
-            onChange={(value) => void save((current) => ({ ...current, appetite: value }))}
-          />
-          <SignalScale
-            label="Energy"
-            value={log.energy}
-            words={['Flat', 'Low', 'Steady', 'Good', 'Strong']}
-            onChange={(value) => void save((current) => ({ ...current, energy: value }))}
-          />
-          <SignalScale
-            label="Nausea"
-            value={log.nausea}
-            min={0}
-            tone="watch"
-            words={['None', 'Mild', 'Moderate', 'Strong']}
-            onChange={(value) => void save((current) => ({ ...current, nausea: value }))}
-          />
-        </div>
-
-        <div className="symptom-panel">
-          <span>Symptoms / friction</span>
-          <div className="symptom-chips">
-            {symptomOptions.map((symptom) => {
-              const active = log.symptoms.includes(symptom)
-              return (
+      <section className="fold-card">
+        <button type="button" className="fold-header" onClick={() => setLiftOpen(!liftOpen)} aria-expanded={liftOpen}>
+          <span>
+            <span className="fold-title"><Dumbbell size={17} /> Today's lift</span>
+            <span className="fold-summary">
+              {suggestedSession ? `Next: ${suggestedSession.name} · ${suggestedSession.focus}` : 'All 4 sessions done this week'}
+              {setsToday.length ? ` · ${setsToday.length} set${setsToday.length === 1 ? '' : 's'} today` : ''}
+            </span>
+          </span>
+          <ChevronRight size={18} className={liftOpen ? 'rotated' : ''} />
+        </button>
+        {liftOpen ? (
+          <div className="fold-body">
+            <div className="session-tabs" role="tablist">
+              {sessions.map((session) => (
                 <button
-                  key={symptom}
+                  key={session.id}
                   type="button"
-                  className={active ? 'active' : ''}
-                  onClick={() => void toggleSymptom(symptom)}
-                  aria-pressed={active}
+                  role="tab"
+                  aria-selected={activeSession.id === session.id}
+                  className={activeSession.id === session.id ? 'active' : ''}
+                  onClick={() => setSelectedSessionId(session.id)}
                 >
-                  {symptom}
+                  {session.name}
                 </button>
-              )
-            })}
+              ))}
+            </div>
+            <SessionLogger session={activeSession} />
           </div>
-        </div>
-
-        <label className="field full-field">
-          <span>Notes</span>
-          <textarea
-            value={log.note}
-            placeholder="Cycle, sleep, digestion, cravings, pain, training..."
-            onChange={(event) => void save((current) => ({ ...current, note: event.target.value }))}
-          />
-        </label>
+        ) : null}
       </section>
+
+      <section className="fold-card">
+        <button type="button" className="fold-header" onClick={() => setSignalsOpen(!signalsOpen)} aria-expanded={signalsOpen}>
+          <span>
+            <span className="fold-title"><HeartPulse size={17} /> Body signals</span>
+            <span className="fold-summary">
+              {appetiteWords[log.appetite - 1]} appetite · {energyWords[log.energy - 1]} energy · {nauseaWords[log.nausea]} nausea
+              {log.symptoms.length ? ` · ${log.symptoms.length} symptom${log.symptoms.length === 1 ? '' : 's'}` : ''}
+            </span>
+          </span>
+          <ChevronRight size={18} className={signalsOpen ? 'rotated' : ''} />
+        </button>
+        {signalsOpen ? (
+          <div className="fold-body">
+            <div className="context-strip" aria-label="Cycle and body context">
+              {contextOptions.map((option) => {
+                const Icon = option.icon
+                const active = log.cycleContext === option.id
+                return (
+                  <button
+                    key={option.id}
+                    type="button"
+                    className={active ? 'active' : ''}
+                    onClick={() => void save((current) => ({ ...current, cycleContext: option.id }))}
+                    aria-pressed={active}
+                  >
+                    <Icon size={15} />
+                    {option.label}
+                  </button>
+                )
+              })}
+            </div>
+            <div className="checkin-grid">
+              <SignalScale
+                label="Appetite"
+                value={log.appetite}
+                words={appetiteWords}
+                onChange={(value) => void save((current) => ({ ...current, appetite: value }))}
+              />
+              <SignalScale
+                label="Energy"
+                value={log.energy}
+                words={energyWords}
+                onChange={(value) => void save((current) => ({ ...current, energy: value }))}
+              />
+              <SignalScale
+                label="Nausea"
+                value={log.nausea}
+                min={0}
+                tone="watch"
+                words={nauseaWords}
+                onChange={(value) => void save((current) => ({ ...current, nausea: value }))}
+              />
+            </div>
+            <div className="symptom-panel">
+              <span>Symptoms / friction</span>
+              <div className="symptom-chips">
+                {symptomOptions.map((symptom) => {
+                  const active = log.symptoms.includes(symptom)
+                  return (
+                    <button
+                      key={symptom}
+                      type="button"
+                      className={active ? 'active' : ''}
+                      onClick={() => void save((current) => ({
+                        ...current,
+                        symptoms: current.symptoms.includes(symptom)
+                          ? current.symptoms.filter((item) => item !== symptom)
+                          : [...current.symptoms, symptom],
+                      }))}
+                      aria-pressed={active}
+                    >
+                      {symptom}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+            <label className="field">
+              <span>Notes</span>
+              <textarea
+                value={log.note}
+                placeholder="Cycle, sleep, digestion, cravings, pain, training..."
+                onChange={(event) => void save((current) => ({ ...current, note: event.target.value }))}
+              />
+            </label>
+          </div>
+        ) : null}
+      </section>
+
+      {safetyNote ? (
+        <section className="alert-strip">
+          <AlertTriangle size={19} />
+          <p>{safetyNote}</p>
+        </section>
+      ) : null}
 
       {proteinSheetOpen ? (
         <BottomSheet title="Add protein" onClose={() => setProteinSheetOpen(false)}>
@@ -353,25 +374,10 @@ export function TodayScreen() {
           </form>
         </BottomSheet>
       ) : null}
-    </div>
-  )
-}
 
-function SummaryTile({
-  icon: Icon,
-  label,
-  value,
-  tone,
-}: {
-  icon: typeof Target
-  label: string
-  value: string
-  tone: 'base' | 'good' | 'watch'
-}) {
-  return (
-    <div className={`summary-tile ${tone}`}>
-      <Icon size={17} />
-      <span><small>{label}</small><strong>{value}</strong></span>
+      <p className="cycle-hint">
+        Sessions done this week: {sessionsDone}/4. Context and signals feed your Week trends and coach summary.
+      </p>
     </div>
   )
 }
@@ -387,77 +393,6 @@ function normalizeDailyLog(log: DailyLog, lifeStage?: string): DailyLog {
     habits: { ...base.habits, ...log.habits },
     cycleContext: log.cycleContext ?? fallbackContext,
     symptoms: Array.isArray(log.symptoms) ? log.symptoms : [],
-  }
-}
-
-function buildNextAction({
-  completeCount,
-  remainingProtein,
-  nextHabit,
-  nextMeal,
-  metabolicSupport,
-  appetite,
-  energy,
-  nausea,
-  cycleContext,
-  symptoms,
-}: {
-  completeCount: number
-  remainingProtein: number
-  nextHabit: string
-  nextMeal: string
-  metabolicSupport: boolean
-  appetite: number
-  energy: number
-  nausea: number
-  cycleContext: CycleContext
-  symptoms: string[]
-}) {
-  if (metabolicSupport && (nausea >= 2 || appetite <= 2)) {
-    return {
-      title: 'Make today an intake-protection day.',
-      detail: 'Protein, fluids, and a low-friction meal come before extra intensity.',
-      tone: 'watch' as const,
-      warning: 'Persistent nausea, vomiting, dehydration, severe abdominal pain, or inability to eat belongs with the prescribing clinician.',
-    }
-  }
-  if (energy <= 2 || symptoms.length >= 2 || cycleContext === 'period') {
-    return {
-      title: 'Lower the bar, keep the streak.',
-      detail: 'Hit protein, hydrate, and use walking or lighter training if symptoms are loud.',
-      tone: 'watch' as const,
-      warning: 'Pain, heavy bleeding, fainting, chest symptoms, or severe weakness is not a willpower problem. Get medical help.',
-    }
-  }
-  if (remainingProtein > 0) {
-    return {
-      title: `Start with ${remainingProtein}g of protein left.`,
-      detail: `Next easy win: ${nextMeal}. Then reassess training after appetite and energy are logged.`,
-      tone: 'base' as const,
-      warning: '',
-    }
-  }
-  if (cycleContext === 'luteal') {
-    return {
-      title: 'Hold the plan through the noisy part.',
-      detail: 'Protein is covered. Expect more hunger or scale noise; finish one anchor instead of changing the plan.',
-      tone: 'base' as const,
-      warning: '',
-    }
-  }
-  if (completeCount < 5) {
-    return {
-      title: `Finish the ${nextHabit} anchor.`,
-      detail: 'Protein is handled. The smallest unfinished habit is the move.',
-      tone: 'base' as const,
-      warning: '',
-    }
-  }
-  return {
-    title: 'Today is handled.',
-    detail: 'Only add a note if something useful changed: cycle, symptoms, digestion, sleep, or training.',
-    tone: 'base' as const,
-    warning: '',
   }
 }
 

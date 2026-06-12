@@ -190,6 +190,8 @@ Do not re-add Studio, Research Gateway, OPP, Modal, product funnel, or peptide l
 
 Purpose: the daily driver. The user should be able to do 90% of a normal day's logging here in under 30 seconds.
 
+**LOCKED (2026-06-12): Today is a pure logging instrument.** The user rejected guidance/narrative cards. Structure, top to bottom: anchor rings → protein floor (readout + named quick-adds + custom sheet) → "Today's lift" fold-card (suggested next session, inline set logging pulled from Training) → "Body signals" fold-card (collapsed one-line summary; expands to cycle context, signal scales, symptoms, notes) → conditional safety strip only when logged signals warrant it. No next-action prose, no summary tiles, no repeated numbers. Do not re-add narrative guidance cards to Today.
+
 Current features (keep all):
 
 - Protein counter with progress bar and quick-add buttons from the meal plan
