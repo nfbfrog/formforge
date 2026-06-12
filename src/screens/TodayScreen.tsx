@@ -62,6 +62,7 @@ export function TodayScreen() {
   const date = localDateKey()
   const [proteinSheetOpen, setProteinSheetOpen] = useState(false)
   const [customAmount, setCustomAmount] = useState('')
+  const [resetArmed, setResetArmed] = useState(false)
   const storedLog = useLiveQuery(() => db.dailyLogs.get(date), [date])
   const settings = useLiveQuery(() => db.settings.get('primary'), [])
   const log = normalizeDailyLog(storedLog ?? createDailyLog(date), settings?.lifeStage)
@@ -207,16 +208,24 @@ export function TodayScreen() {
           action={
             <button
               type="button"
-              className="icon-button quiet"
-              title="Reset today's protein"
-              aria-label="Reset today's protein"
-              onClick={() => void save((current) => ({
-                ...current,
-                protein: 0,
-                habits: { ...current.habits, protein: false },
-              }))}
+              className={`icon-button quiet ${resetArmed ? 'armed-reset' : ''}`}
+              title={resetArmed ? 'Tap again to confirm' : "Reset today's protein"}
+              aria-label={resetArmed ? 'Confirm protein reset' : "Reset today's protein"}
+              onClick={() => {
+                if (!resetArmed) {
+                  setResetArmed(true)
+                  window.setTimeout(() => setResetArmed(false), 3500)
+                  return
+                }
+                setResetArmed(false)
+                void save((current) => ({
+                  ...current,
+                  protein: 0,
+                  habits: { ...current.habits, protein: false },
+                }))
+              }}
             >
-              <RotateCcw size={17} />
+              {resetArmed ? 'Reset?' : <RotateCcw size={17} />}
             </button>
           }
         />
@@ -230,7 +239,7 @@ export function TodayScreen() {
         <div className="quick-adds">
           {menus[0].meals.map((meal) => (
             <button key={meal.name} type="button" onClick={() => void addProtein(meal.protein)}>
-              <Plus size={16} /> {meal.protein}g
+              <Plus size={15} /> {meal.name} · {meal.protein}g
             </button>
           ))}
           <button

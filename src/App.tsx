@@ -30,11 +30,11 @@ const screens: Array<{
   icon: typeof Activity
 }> = [
   { id: 'today', label: 'Today', eyebrow: 'Daily dashboard', title: 'Today', icon: Activity },
-  { id: 'week', label: 'Week', eyebrow: 'Seven-day view', title: 'See the pattern.', icon: CalendarDays },
-  { id: 'plan', label: 'Plan', eyebrow: 'Food framework', title: 'Eat without re-deciding.', icon: Apple },
-  { id: 'training', label: 'Training', eyebrow: 'Strength plan', title: 'Build, log, progress.', icon: Dumbbell },
-  { id: 'health', label: 'Health', eyebrow: 'Vitals + records', title: 'Track the signals.', icon: HeartPulse },
-  { id: 'learn', label: 'Learn', eyebrow: 'Women\'s health library', title: 'Understand the signals.', icon: BookOpen },
+  { id: 'week', label: 'Week', eyebrow: 'See the pattern', title: 'Week', icon: CalendarDays },
+  { id: 'plan', label: 'Plan', eyebrow: 'Eat without re-deciding', title: 'Plan', icon: Apple },
+  { id: 'training', label: 'Training', eyebrow: 'Build, log, progress', title: 'Training', icon: Dumbbell },
+  { id: 'health', label: 'Health', eyebrow: 'Vitals, records, sharing', title: 'Health', icon: HeartPulse },
+  { id: 'learn', label: 'Learn', eyebrow: 'Women\'s health library', title: 'Learn', icon: BookOpen },
 ]
 
 function Screen({ id }: { id: ScreenId }) {

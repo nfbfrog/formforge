@@ -1,0 +1,54 @@
+<!-- @dsCard group="Components" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FormForge — Signal scales</title>
+<style>
+* { box-sizing: border-box; margin: 0; }
+body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; padding: 12px; display: grid; gap: 14px; }
+.theme { padding: 16px; border-radius: 14px; display: grid; gap: 10px; }
+.theme-light { --paper:#fffefa; --track:#e6e9e4; --line:#d9ded8; --ink:#17332f; --ink-soft:#49615e; --faint:#6e7c79; --accent-text:#1d4f44; --ring:#2f7a5e; --watch-accent:#c56e36; background:#f7f5ef; color: var(--ink); }
+.theme-dark { --paper:#1c2422; --track:#2a3431; --line:#2b3733; --ink:#e7efeb; --ink-soft:#a3b6b0; --faint:#7e918b; --accent-text:#8fcdb3; --ring:#5cb88a; --watch-accent:#d99a55; background:#131918; color: var(--ink); }
+.t-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-soft); }
+.signal-scale { display: grid; gap: 11px; padding: 16px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; max-width: 340px; }
+.signal-scale header { display: flex; align-items: baseline; justify-content: space-between; }
+.signal-scale strong { font-size: 12px; }
+.signal-word { color: var(--accent-text); font-size: 10px; font-weight: 850; letter-spacing: .05em; text-transform: uppercase; }
+.watch .signal-word { color: var(--watch-accent); }
+.cleared .signal-word { color: var(--faint); }
+.signal-segments { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 5px; }
+.signal-segments i { height: 38px; background: var(--track); border-radius: 12px; }
+.signal-segments i.filled { background: var(--ring); }
+.watch .signal-segments i.filled { background: var(--watch-accent); }
+</style>
+</head>
+<body>
+  <div class="theme theme-light">
+    <span class="t-label">Signal scale — one-tap segments, word labels, never drag sliders</span>
+    <div class="signal-scale">
+      <header><strong>Appetite</strong><span class="signal-word">Steady</span></header>
+      <div class="signal-segments"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i></i><i></i></div>
+    </div>
+    <div class="signal-scale watch">
+      <header><strong>Nausea</strong><span class="signal-word">Moderate</span></header>
+      <div class="signal-segments"><i class="filled"></i><i class="filled"></i><i></i></div>
+    </div>
+    <div class="signal-scale watch cleared">
+      <header><strong>Nausea</strong><span class="signal-word">None</span></header>
+      <div class="signal-segments"><i></i><i></i><i></i></div>
+    </div>
+  </div>
+  <div class="theme theme-dark">
+    <span class="t-label">Dark — symptom scales use amber; "None" stays neutral, not alarming</span>
+    <div class="signal-scale">
+      <header><strong>Energy</strong><span class="signal-word">Strong</span></header>
+      <div class="signal-segments"><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i><i class="filled"></i></div>
+    </div>
+    <div class="signal-scale watch">
+      <header><strong>Nausea</strong><span class="signal-word">Mild</span></header>
+      <div class="signal-segments"><i class="filled"></i><i></i><i></i></div>
+    </div>
+  </div>
+</body>
+</html>

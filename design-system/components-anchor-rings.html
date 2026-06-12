@@ -1,0 +1,45 @@
+<!-- @dsCard group="Components" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FormForge — Anchor rings</title>
+<style>
+* { box-sizing: border-box; margin: 0; }
+body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; padding: 12px; display: grid; gap: 14px; }
+.theme { padding: 16px; border-radius: 14px; display: grid; gap: 10px; }
+.theme-light { --paper:#fffefa; --track:#e6e9e4; --line:#d9ded8; --ink-soft:#49615e; --faint:#6e7c79; --accent-text:#1d4f44; --mint:#dcebe3; --mint-border:#a7c6b4; --ring:#2f7a5e; background:#f7f5ef; color:#17332f; }
+.theme-dark { --paper:#1c2422; --track:#2a3431; --line:#2b3733; --ink-soft:#a3b6b0; --faint:#7e918b; --accent-text:#8fcdb3; --mint:#21342c; --mint-border:#355948; --ring:#5cb88a; background:#131918; color:#e7efeb; }
+.t-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-soft); }
+.anchor-rings { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 320px; }
+.anchor-ring { display: grid; justify-items: center; gap: 5px; padding: 13px 4px 11px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; }
+.anchor-ring.complete { background: var(--mint); border-color: var(--mint-border); }
+.ring { position: relative; width: 64px; height: 64px; display: grid; place-items: center; }
+.ring svg { position: absolute; inset: 0; transform: rotate(-90deg); }
+.ring-track { fill: none; stroke: var(--track); }
+.ring-fill { fill: none; stroke: var(--ring); stroke-linecap: round; }
+.ring-icon { position: relative; font-size: 17px; color: var(--ink-soft); }
+.complete .ring-icon, .complete .ring-label { color: var(--accent-text); }
+.ring-label { color: var(--ink-soft); font-size: 10px; font-weight: 750; }
+.ring-detail { margin-top: -3px; color: var(--faint); font-size: 10px; font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+  <div class="theme theme-light">
+    <span class="t-label">Anchor rings — empty / partial (protein, proportional) / complete</span>
+    <div class="anchor-rings">
+      <div class="anchor-ring"><span class="ring"><svg viewBox="0 0 64 64" width="64" height="64"><circle class="ring-track" cx="32" cy="32" r="29.5" stroke-width="5"/></svg><span class="ring-icon">&#128099;</span></span><span class="ring-label">Steps</span></div>
+      <div class="anchor-ring"><span class="ring"><svg viewBox="0 0 64 64" width="64" height="64"><circle class="ring-track" cx="32" cy="32" r="29.5" stroke-width="5"/><circle class="ring-fill" cx="32" cy="32" r="29.5" stroke-width="5" stroke-dasharray="185.4" stroke-dashoffset="102"/></svg><span class="ring-icon">&#129367;</span></span><span class="ring-label">Protein</span><span class="ring-detail">63g</span></div>
+      <div class="anchor-ring complete"><span class="ring"><svg viewBox="0 0 64 64" width="64" height="64"><circle class="ring-track" cx="32" cy="32" r="29.5" stroke-width="5"/><circle class="ring-fill" cx="32" cy="32" r="29.5" stroke-width="5" stroke-dasharray="185.4" stroke-dashoffset="0"/></svg><span class="ring-icon">&#10003;</span></span><span class="ring-label">Sleep</span></div>
+    </div>
+  </div>
+  <div class="theme theme-dark">
+    <span class="t-label">Dark — same component, brighter ring stroke</span>
+    <div class="anchor-rings">
+      <div class="anchor-ring"><span class="ring"><svg viewBox="0 0 64 64" width="64" height="64"><circle class="ring-track" cx="32" cy="32" r="29.5" stroke-width="5"/></svg><span class="ring-icon">&#128099;</span></span><span class="ring-label">Steps</span></div>
+      <div class="anchor-ring"><span class="ring"><svg viewBox="0 0 64 64" width="64" height="64"><circle class="ring-track" cx="32" cy="32" r="29.5" stroke-width="5"/><circle class="ring-fill" cx="32" cy="32" r="29.5" stroke-width="5" stroke-dasharray="185.4" stroke-dashoffset="102"/></svg><span class="ring-icon">&#129367;</span></span><span class="ring-label">Protein</span><span class="ring-detail">63g</span></div>
+      <div class="anchor-ring complete"><span class="ring"><svg viewBox="0 0 64 64" width="64" height="64"><circle class="ring-track" cx="32" cy="32" r="29.5" stroke-width="5"/><circle class="ring-fill" cx="32" cy="32" r="29.5" stroke-width="5" stroke-dasharray="185.4" stroke-dashoffset="0"/></svg><span class="ring-icon">&#10003;</span></span><span class="ring-label">Sleep</span></div>
+    </div>
+  </div>
+</body>
+</html>

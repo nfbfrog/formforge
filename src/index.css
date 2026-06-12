@@ -5,6 +5,10 @@
   -webkit-font-smoothing: antialiased;
   color-scheme: light;
 
+  /* Shape — identical in both themes */
+  --radius-card: 12px;
+  --radius-control: 8px;
+
   /* Brand constants — identical in both themes */
   --forest: #143a36;
   --forest-2: #23564f;
@@ -261,7 +265,7 @@ a {
   place-items: center;
   color: var(--brand-mark-fg);
   background: var(--brand-mark-bg);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
 }
 
 .brand div {
@@ -295,7 +299,7 @@ a {
   color: var(--sidebar-fg-dim);
   background: transparent;
   border: 0;
-  border-radius: 7px;
+  border-radius: var(--radius-card);
   cursor: pointer;
   transition: color 160ms ease, background-color 160ms ease;
 }
@@ -374,7 +378,7 @@ a {
   color: var(--ink);
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
   cursor: pointer;
   transition: border-color 160ms ease, box-shadow 160ms ease;
 }
@@ -388,6 +392,16 @@ a {
   width: 34px;
   height: 34px;
   background: transparent;
+}
+
+.icon-button.armed-reset {
+  width: auto;
+  padding: 0 12px;
+  color: var(--danger);
+  background: var(--urgent-bg);
+  border-color: var(--urgent-border);
+  font-size: 11px;
+  font-weight: 800;
 }
 
 .screen {
@@ -419,7 +433,7 @@ a {
   background:
     linear-gradient(135deg, rgba(20, 58, 54, 0.98), rgba(50, 106, 123, 0.95)),
     var(--forest);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow);
 }
 
@@ -459,7 +473,7 @@ a {
   color: rgba(255, 255, 255, 0.86);
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .metric-pill.good {
@@ -498,7 +512,7 @@ a {
   color: var(--watch-text);
   background: var(--alert-bg);
   border: 1px solid var(--alert-border);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .alert-strip.urgent {
@@ -519,7 +533,7 @@ a {
   background: var(--read-bg), var(--paper);
   border: 1px solid var(--read-border);
   border-left: 5px solid var(--coral);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow);
 }
 
@@ -564,7 +578,7 @@ a {
   text-align: center;
   background: var(--tile-bg);
   border: 1px solid var(--tile-border);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .summary-tile.good {
@@ -658,7 +672,7 @@ a {
   background: var(--paper);
   border: 1px solid var(--line);
   border-top: 4px solid var(--forest-2);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow);
 }
 
@@ -722,7 +736,7 @@ a {
   color: #fff;
   background: var(--accent-strong);
   border: 1px solid var(--accent-strong);
-  border-radius: 6px;
+  border-radius: var(--radius-control);
   font-size: 12px;
   font-weight: 750;
   cursor: pointer;
@@ -853,7 +867,7 @@ button.anchor-ring:active {
   padding: 16px;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .signal-scale header {
@@ -895,7 +909,7 @@ button.anchor-ring:active {
   height: 38px;
   background: var(--track);
   border: 1px solid transparent;
-  border-radius: 7px;
+  border-radius: var(--radius-card);
   cursor: pointer;
   transition: background-color 140ms ease, transform 100ms ease;
 }
@@ -950,7 +964,7 @@ input[type="range"] {
   color: var(--ink);
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: var(--radius-control);
 }
 
 .field textarea {
@@ -989,7 +1003,7 @@ input[type="range"] {
   overflow: hidden;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .week-corner,
@@ -1071,7 +1085,7 @@ input[type="range"] {
   padding: 14px;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .insight-card > svg {
@@ -1131,7 +1145,7 @@ input[type="range"] {
   text-align: left;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
   cursor: pointer;
 }
 
@@ -1189,7 +1203,7 @@ input[type="range"] {
   color: var(--ink-soft);
   background: transparent;
   border: 1px dashed var(--line-dark);
-  border-radius: 6px;
+  border-radius: var(--radius-control);
   font-size: 11px;
   font-weight: 700;
   cursor: pointer;
@@ -1212,7 +1226,7 @@ input[type="range"] {
   overflow: hidden;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
 }
 
 .menu-card > header {
@@ -1311,7 +1325,7 @@ input[type="range"] {
   place-items: center;
   color: var(--blue);
   background: var(--blue-soft);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .rule h3 {
@@ -1327,7 +1341,7 @@ input[type="range"] {
   overflow: hidden;
   background: var(--ramp-bg);
   border: 1px solid var(--ramp-border);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
 }
 
 .ramp-header {
@@ -1417,7 +1431,7 @@ input[type="range"] {
   overflow: hidden;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .exercise-row {
@@ -1498,7 +1512,7 @@ input[type="range"] {
   padding: 18px;
   color: white;
   background: var(--blue-deep);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
 }
 
 .training-rules h3,
@@ -1528,7 +1542,7 @@ input[type="range"] {
   text-align: left;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
   cursor: pointer;
   transition: border-color 160ms ease, box-shadow 160ms ease;
 }
@@ -1572,7 +1586,7 @@ input[type="range"] {
   overflow: hidden;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .lab-table > div {
@@ -1610,7 +1624,7 @@ input[type="range"] {
   padding: 15px;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .safety-card > svg {
@@ -1646,7 +1660,7 @@ input[type="range"] {
   background: var(--paper);
   border: 1px solid var(--line);
   border-left: 4px solid var(--forest-2);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow);
 }
 
@@ -1689,7 +1703,7 @@ input[type="range"] {
   padding: 10px 11px;
   background: var(--surface-sunken);
   border: 1px solid var(--line);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .share-toggle span {
@@ -1749,7 +1763,7 @@ input[type="range"] {
   color: var(--ink);
   background: var(--surface-sunken);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 11px;
   line-height: 1.6;
@@ -1792,7 +1806,7 @@ input[type="range"] {
   padding: 18px;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .research-card header {
@@ -1874,7 +1888,7 @@ input[type="range"] {
   padding: 22px;
   background: var(--canvas);
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--radius-card);
   box-shadow: var(--shadow-pop);
 }
 
@@ -1908,7 +1922,7 @@ input[type="range"] {
   padding: 12px;
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: var(--radius-control);
 }
 
 .toggle-list label span {
@@ -1946,7 +1960,7 @@ input[type="range"] {
   background: var(--paper);
   border: 1px solid var(--line);
   border-left: 4px solid var(--blue-deep);
-  border-radius: 7px;
+  border-radius: var(--radius-card);
 }
 
 .cloud-panel > div:first-child {
@@ -1999,7 +2013,7 @@ input[type="range"] {
 .secondary-button {
   min-height: 40px;
   padding: 0 16px;
-  border-radius: 6px;
+  border-radius: var(--radius-control);
   font-size: 11px;
   font-weight: 800;
   cursor: pointer;

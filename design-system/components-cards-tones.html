@@ -1,0 +1,54 @@
+<!-- @dsCard group="Components" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FormForge — Cards and tones</title>
+<style>
+* { box-sizing: border-box; margin: 0; }
+body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; padding: 12px; display: grid; gap: 14px; }
+.theme { padding: 16px; border-radius: 14px; display: grid; gap: 10px; }
+.theme-light { --paper:#fffefa; --line:#d9ded8; --ink:#17332f; --ink-soft:#49615e; --forest-2:#23564f; --coral:#e66b57; --good-bg:#f2f8f4; --good-border:#bad1c1; --watch-bg:#fff7ed; --watch-border:#dfc49f; --watch-text:#7a3a21; --urgent-bg:#fff4f2; --urgent-border:#d89d96; --danger:#9e3d36; --read-border:#e4c7bc; background:#f7f5ef; color: var(--ink); }
+.theme-dark { --paper:#1c2422; --line:#2b3733; --ink:#e7efeb; --ink-soft:#a3b6b0; --forest-2:#2c6356; --coral:#ef8472; --good-bg:#1c2f27; --good-border:#34564a; --watch-bg:#322a1c; --watch-border:#5c4c2e; --watch-text:#e8b48c; --urgent-bg:#371f1c; --urgent-border:#63342e; --danger:#e2887f; --read-border:#43342e; background:#131918; color: var(--ink); }
+.t-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-soft); }
+.next-action { padding: 14px; background: var(--paper); border: 1px solid var(--read-border); border-left: 5px solid var(--coral); border-radius: 12px; display: grid; gap: 4px; max-width: 380px; }
+.next-action .eyebrow { color: var(--coral); font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.next-action h2 { font-family: Georgia, serif; font-size: 20px; font-weight: 600; }
+.next-action p { color: var(--ink-soft); font-size: 11px; line-height: 1.5; }
+.focus-panel { padding: 14px; background: var(--paper); border: 1px solid var(--line); border-top: 4px solid var(--forest-2); border-radius: 12px; max-width: 380px; font-size: 12px; }
+.tones { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 380px; }
+.tone { padding: 10px; border-radius: 12px; border: 1px solid; display: grid; gap: 2px; }
+.tone span { font-size: 8px; font-weight: 850; text-transform: uppercase; color: var(--ink-soft); }
+.tone strong { font-size: 12px; }
+.tone.good { background: var(--good-bg); border-color: var(--good-border); }
+.tone.watch { background: var(--watch-bg); border-color: var(--watch-border); }
+.tone.urgent { background: var(--urgent-bg); border-color: var(--urgent-border); }
+.alert { display: flex; gap: 8px; align-items: center; padding: 10px 12px; color: var(--watch-text); background: var(--watch-bg); border: 1px solid var(--watch-border); border-radius: 12px; font-size: 11px; max-width: 380px; }
+</style>
+</head>
+<body>
+  <div class="theme theme-light">
+    <span class="t-label">Next-action card — coral spine, one action, serif lead</span>
+    <div class="next-action"><span class="eyebrow">FormForge daily</span><h2>Start with 77g of protein left.</h2><p>Next easy win: Yogurt bowl. Then reassess training after appetite and energy are logged.</p></div>
+    <span class="t-label">Focus panel — accent top border, primary work surface</span>
+    <div class="focus-panel"><strong>Protein floor</strong></div>
+    <span class="t-label">Tones — good / watch / urgent, backgrounds + borders only</span>
+    <div class="tones">
+      <div class="tone good"><span>Consistency</span><strong>28/35</strong></div>
+      <div class="tone watch"><span>Weight trend</span><strong>Fast</strong></div>
+      <div class="tone urgent"><span>Blood pressure</span><strong>High</strong></div>
+    </div>
+    <span class="t-label">Alert strip — calm copy, never red walls</span>
+    <div class="alert">&#9888; Lower the bar, keep the streak. Hit protein and hydrate.</div>
+  </div>
+  <div class="theme theme-dark">
+    <span class="t-label">Dark — tinted surfaces replace shadows</span>
+    <div class="next-action"><span class="eyebrow">FormForge daily</span><h2>Today is handled.</h2><p>Only add a note if something useful changed.</p></div>
+    <div class="tones">
+      <div class="tone good"><span>Consistency</span><strong>28/35</strong></div>
+      <div class="tone watch"><span>Weight trend</span><strong>Fast</strong></div>
+      <div class="tone urgent"><span>Blood pressure</span><strong>High</strong></div>
+    </div>
+  </div>
+</body>
+</html>

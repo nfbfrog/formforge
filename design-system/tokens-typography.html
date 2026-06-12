@@ -1,0 +1,33 @@
+<!-- @dsCard group="Tokens" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FormForge — Typography</title>
+<style>
+* { box-sizing: border-box; margin: 0; }
+body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; padding: 12px; }
+.theme { --paper:#fffefa; --line:#d9ded8; --ink:#17332f; --ink-soft:#49615e; --coral:#e66b57; background:#f7f5ef; color: var(--ink); padding: 18px; border-radius: 14px; display: grid; gap: 14px; }
+.row { display: grid; gap: 3px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.row:last-child { border-bottom: 0; padding-bottom: 0; }
+.spec { font-size: 9px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: .06em; font-weight: 800; }
+.display { font-family: Georgia, "Times New Roman", serif; font-size: 34px; font-weight: 600; line-height: 1.08; }
+.numeric { font-family: Georgia, serif; font-size: 46px; line-height: 1; font-variant-numeric: tabular-nums; }
+.numeric small { font-family: Inter, sans-serif; font-size: 16px; color: var(--ink-soft); }
+.title { font-size: 18px; font-weight: 700; }
+.body-text { font-size: 12px; color: var(--ink-soft); line-height: 1.55; }
+.eyebrow { color: var(--coral); font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+.label { font-size: 10px; font-weight: 800; text-transform: uppercase; color: var(--ink-soft); }
+</style>
+</head>
+<body>
+  <div class="theme">
+    <div class="row"><span class="spec">Display — Georgia 34/600, page titles</span><span class="display">Today</span></div>
+    <div class="row"><span class="spec">Numeric readout — Georgia 46, tabular-nums, instrument values</span><span class="numeric">126<small> / 140g</small></span></div>
+    <div class="row"><span class="spec">Eyebrow — Inter 10/800 caps, coral, context line above titles</span><span class="eyebrow">See the pattern</span></div>
+    <div class="row"><span class="spec">Title — Inter 18/700, section headings</span><span class="title">Daily anchors</span></div>
+    <div class="row"><span class="spec">Body — Inter 12, ink-soft, 1.55 line height</span><span class="body-text">Five basics that protect the cut without turning the day into homework.</span></div>
+    <div class="row"><span class="spec">Label — Inter 10/800 caps, form fields and chips</span><span class="label">Symptoms / friction</span></div>
+  </div>
+</body>
+</html>

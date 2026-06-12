@@ -31,7 +31,8 @@ export function HealthScreen() {
   const backupRef = useRef<HTMLInputElement>(null)
   const [message, setMessage] = useState('')
   const [coachDays, setCoachDays] = useState(14)
-  const [includeNotes, setIncludeNotes] = useState(true)
+  // Verbatim notes are the most sensitive thing in the app — sharing them is opt-in, never default.
+  const [includeNotes, setIncludeNotes] = useState(false)
   const [includeSymptoms, setIncludeSymptoms] = useState(true)
   const [previewOpen, setPreviewOpen] = useState(false)
   const [previewText, setPreviewText] = useState('')
@@ -52,6 +53,7 @@ export function HealthScreen() {
     if (!file) return
     try {
       const result = Papa.parse<CsvRow>(await file.text(), { header: true, skipEmptyLines: true })
+      const proteinTarget = (await db.settings.get('primary'))?.proteinTarget ?? 140
       let imported = 0
       for (const row of result.data) {
         const normalized = Object.fromEntries(Object.entries(row).map(([key, value]) => [key.trim().toLowerCase(), value]))
@@ -68,9 +70,7 @@ export function HealthScreen() {
           calories: Number.isFinite(calories) ? calories : current.calories,
           habits: {
             ...current.habits,
-            protein: Number.isFinite(protein)
-              ? protein >= ((await db.settings.get('primary'))?.proteinTarget ?? 140)
-              : current.habits.protein,
+            protein: Number.isFinite(protein) ? protein >= proteinTarget : current.habits.protein,
           },
           imported: true,
         })

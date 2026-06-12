@@ -1,0 +1,39 @@
+<!-- @dsCard group="Components" -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>FormForge — Buttons and chips</title>
+<style>
+* { box-sizing: border-box; margin: 0; }
+body { font-family: Inter, ui-sans-serif, system-ui, sans-serif; padding: 12px; display: grid; gap: 14px; }
+.theme { padding: 16px; border-radius: 14px; display: grid; gap: 12px; }
+.theme-light { --paper:#fffefa; --line:#d9ded8; --line-dark:#bac8c1; --ink:#17332f; --ink-soft:#49615e; --accent-strong:#143a36; --tile-bg:rgba(255,255,255,.66); --tile-border:#eadbd4; --danger:#9e3d36; --urgent-bg:#fff4f2; --urgent-border:#d89d96; background:#f7f5ef; color: var(--ink); }
+.theme-dark { --paper:#1c2422; --line:#2b3733; --line-dark:#3d4c47; --ink:#e7efeb; --ink-soft:#a3b6b0; --accent-strong:#2e6e5e; --tile-bg:rgba(255,255,255,.05); --tile-border:#3a4540; --danger:#e2887f; --urgent-bg:#371f1c; --urgent-border:#63342e; background:#131918; color: var(--ink); }
+.t-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-soft); }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.primary, .secondary, .quick { min-height: 40px; padding: 0 16px; border-radius: 8px; font-size: 11px; font-weight: 800; border: 1px solid transparent; display: inline-flex; align-items: center; gap: 6px; }
+.primary { color: #fff; background: var(--accent-strong); border-color: var(--accent-strong); }
+.secondary { color: var(--ink); background: transparent; border-color: var(--line-dark); }
+.quick { min-height: 36px; font-size: 12px; font-weight: 750; color: #fff; background: var(--accent-strong); border-color: var(--accent-strong); }
+.chip { min-height: 34px; display: inline-flex; align-items: center; padding: 0 11px; color: var(--ink-soft); background: var(--tile-bg); border: 1px solid var(--tile-border); border-radius: 18px; font-size: 10px; font-weight: 800; }
+.chip.active { color: #fff; background: var(--accent-strong); border-color: var(--accent-strong); }
+.armed { min-height: 34px; padding: 0 12px; border-radius: 8px; color: var(--danger); background: var(--urgent-bg); border: 1px solid var(--urgent-border); font-size: 11px; font-weight: 800; display: inline-flex; align-items: center; }
+</style>
+</head>
+<body>
+  <div class="theme theme-light">
+    <span class="t-label">Buttons — primary / secondary / quick-add (named, never bare grams)</span>
+    <div class="row"><span class="primary">Copy summary</span><span class="secondary">Download packet</span><span class="quick">+ Yogurt bowl · 38g</span></div>
+    <span class="t-label">Chips — context and symptoms, full-round</span>
+    <div class="row"><span class="chip active">Luteal</span><span class="chip">Follicular</span><span class="chip">Cramps</span><span class="chip active">Low mood</span></div>
+    <span class="t-label">Destructive — two-step arm, never one-tap</span>
+    <div class="row"><span class="armed">Reset?</span></div>
+  </div>
+  <div class="theme theme-dark">
+    <span class="t-label">Dark</span>
+    <div class="row"><span class="primary">Copy summary</span><span class="secondary">Download packet</span><span class="quick">+ Salmon plate · 38g</span></div>
+    <div class="row"><span class="chip active">Peri / meno</span><span class="chip">Not tracking</span><span class="armed">Reset?</span></div>
+  </div>
+</body>
+</html>

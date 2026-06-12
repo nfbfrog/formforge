@@ -65,7 +65,18 @@ Known environment note:
 
 On this Windows/Codex setup, `npm test` and `npm run build` may fail inside the sandbox with Vite/Rolldown `spawn EPERM`. The commands passed when run outside the sandbox.
 
-Latest verified state (Phase 1 complete):
+Audit decisions now locked into the product (2026-06-11):
+
+- Logging a training set auto-marks that session in Week and completes Today's movement anchor — one workout is logged once, never three times.
+- Exercise rows show "Last session: W x R" across days and prefill placeholders — progressive overload needs memory.
+- Quick-add protein buttons are named ("Yogurt bowl · 38g"), never bare gram counts.
+- Destructive actions are two-step (tap → "Reset?" → tap), never one-tap.
+- Coach-share notes default OFF (opt-in); symptom counts stay default ON.
+- Topbar: h1 is always the tab name; flavor copy lives in the eyebrow.
+- Shape tokens: `--radius-card: 12px`, `--radius-control: 8px` — no hard-coded radii.
+- Design-system spec cards live in `design-system/` (six @dsCard previews, both themes) — push to a claude.ai/design project via DesignSync when logged in.
+
+Latest verified state (Phase 1 + audit pass complete):
 
 - `npm run lint` passed
 - `npm test` passed: 6 tests
