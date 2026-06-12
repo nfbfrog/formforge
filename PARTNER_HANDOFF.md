@@ -67,7 +67,7 @@ Daily driver:
 - Protein progress bar
 - Quick-add meal protein buttons
 - Daily anchors: protein, lift/walk, steps, hydration, sleep
-- Appetite, energy, nausea sliders
+- Appetite, energy, nausea one-tap segmented scales
 - Cycle/body context chips
 - Symptom chips
 - Notes

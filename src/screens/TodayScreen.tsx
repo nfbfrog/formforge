@@ -249,27 +249,24 @@ export function TodayScreen() {
       <section>
         <SectionHeading title="Body signals" detail={contextGuidance[log.cycleContext]} />
         <div className="checkin-grid">
-          <ScaleInput
+          <SignalScale
             label="Appetite"
             value={log.appetite}
-            low="Low"
-            high="High"
+            words={['Gone', 'Low', 'Steady', 'Hungry', 'Ravenous']}
             onChange={(value) => void save((current) => ({ ...current, appetite: value }))}
           />
-          <ScaleInput
+          <SignalScale
             label="Energy"
             value={log.energy}
-            low="Flat"
-            high="Strong"
+            words={['Flat', 'Low', 'Steady', 'Good', 'Strong']}
             onChange={(value) => void save((current) => ({ ...current, energy: value }))}
           />
-          <ScaleInput
+          <SignalScale
             label="Nausea"
             value={log.nausea}
-            low="None"
-            high="Strong"
             min={0}
-            max={3}
+            tone="watch"
+            words={['None', 'Mild', 'Moderate', 'Strong']}
             onChange={(value) => void save((current) => ({ ...current, nausea: value }))}
           />
         </div>
@@ -455,34 +452,48 @@ function buildNextAction({
   }
 }
 
-function ScaleInput({
+function SignalScale({
   label,
   value,
-  low,
-  high,
+  words,
   min = 1,
-  max = 5,
+  tone = 'accent',
   onChange,
 }: {
   label: string
   value: number
-  low: string
-  high: string
+  /** One word per level, indexed from `min` (e.g. min 0 → words[0] describes 0). */
+  words: string[]
   min?: number
-  max?: number
+  tone?: 'accent' | 'watch'
   onChange: (value: number) => void
 }) {
+  const max = min + words.length - 1
+  const levels: number[] = []
+  for (let level = Math.max(min, 1); level <= max; level += 1) levels.push(level)
+  const cleared = min === 0 && value === 0
   return (
-    <label className="scale-input">
-      <span><strong>{label}</strong><b>{value}</b></span>
-      <input
-        type="range"
-        min={min}
-        max={max}
-        value={value}
-        onChange={(event) => onChange(Number(event.target.value))}
-      />
-      <small><span>{low}</span><span>{high}</span></small>
-    </label>
+    <div className={`signal-scale ${tone} ${cleared ? 'cleared' : ''}`}>
+      <header>
+        <strong>{label}</strong>
+        <span className="signal-word">{words[value - min] ?? ''}</span>
+      </header>
+      <div className="signal-segments" role="group" aria-label={`${label} level`}>
+        {levels.map((level) => (
+          <button
+            key={level}
+            type="button"
+            className={value >= level ? 'filled' : ''}
+            aria-pressed={value === level}
+            aria-label={`${label}: ${words[level - min]}`}
+            onClick={() => {
+              haptics.tick()
+              // On zero-based scales, tapping the current level clears back to none.
+              onChange(min === 0 && value === level ? 0 : level)
+            }}
+          />
+        ))}
+      </div>
+    </div>
   )
 }

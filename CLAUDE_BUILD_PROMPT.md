@@ -183,7 +183,7 @@ Current features (keep all):
 
 - Protein counter with progress bar and quick-add buttons from the meal plan
 - Five daily anchors: Protein, Lift/walk, Steps, Hydration, Sleep
-- Appetite / Energy / Nausea sliders
+- Appetite / Energy / Nausea one-tap segmented scales with word labels (Gone→Ravenous, Flat→Strong, None→Strong); never drag sliders for discrete ratings
 - Cycle/body context: Period, Follicular, Ovulation, Luteal, Peri/meno, Not tracking
 - Symptom chips: Cramps, Bloat, Cravings, Headache, Hot flashes, Low mood
 - Notes

@@ -846,37 +846,74 @@ button.anchor-ring:active {
   gap: 12px;
 }
 
-.scale-input {
+.signal-scale {
   display: grid;
-  gap: 10px;
+  align-content: start;
+  gap: 11px;
   padding: 16px;
   background: var(--paper);
   border: 1px solid var(--line);
   border-radius: 7px;
 }
 
-.scale-input > span,
-.scale-input small {
+.signal-scale header {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   justify-content: space-between;
+  gap: 10px;
 }
 
-.scale-input strong {
+.signal-scale strong {
   color: var(--ink);
   font-size: 12px;
 }
 
-.scale-input b {
-  color: var(--coral);
-  font-size: 17px;
-  font-variant-numeric: tabular-nums;
+.signal-word {
+  color: var(--accent-text);
+  font-size: 10px;
+  font-weight: 850;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-.scale-input small {
+.signal-scale.watch .signal-word {
+  color: var(--watch-accent);
+}
+
+.signal-scale.cleared .signal-word {
   color: var(--text-faint);
-  font-size: 9px;
-  text-transform: uppercase;
+}
+
+.signal-segments {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 5px;
+}
+
+.signal-segments button {
+  height: 38px;
+  background: var(--track);
+  border: 1px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background-color 140ms ease, transform 100ms ease;
+}
+
+.signal-segments button:hover {
+  border-color: var(--line-dark);
+}
+
+.signal-segments button:active {
+  transform: scaleY(0.9);
+}
+
+.signal-segments button.filled {
+  background: var(--ring-stroke);
+}
+
+.signal-scale.watch .signal-segments button.filled {
+  background: var(--watch-accent);
 }
 
 input[type="range"] {
@@ -2513,7 +2550,7 @@ input[type="range"] {
     grid-column: span 2;
   }
 
-  .scale-input {
+  .signal-scale {
     padding: 14px;
   }
 
